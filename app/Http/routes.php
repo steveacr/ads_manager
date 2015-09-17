@@ -11,6 +11,13 @@
 |
 */
 
+/*
 Route::get('/', function () {
     return view('welcome');
 });
+*/
+
+Route::get('/', 'IndexController@index');
+Route::get('show/{id}/{index}', 'IndexController@show');
+Route::post('remove/', 'IndexController@destroy');
+Route::post('submit/', 'IndexController@store');
