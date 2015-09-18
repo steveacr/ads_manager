@@ -37,7 +37,7 @@
     </head>
 
     <link href="{{ asset('/packages/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    
+
     <body>
         <header class="navbar navbar-static-top bs-docs-nav" role="banner">
             <div class="navbar-header">
@@ -71,7 +71,7 @@
                                 <input type="hidden" name="index_id" value="{{ $current }}">
                             </form>
                             <td>
-                                <video controls="controls" height="300" width="400">
+                                <video preload="auto" controls="controls" height="300" width="400">
                                     <?php $path = "/cctv1/".$ii->file; ?>
                                     <input type="hidden" name="filename" form="newad{{$i}}" value="{{ $path }}">
                                     <source src="{{ $path }}" type="video/mp4" />

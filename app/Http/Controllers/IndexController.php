@@ -79,8 +79,6 @@ class IndexController extends Controller
                 ]
             );
 
-            $pheanstalk = new Pheanstalk('127.0.0.1');
-            $pheanstalk->useTube('auto_ads')->put((string)($log->id));
         }
 
         return redirect('show/'.(string)$id.'/'.(string)($index+1));
@@ -103,20 +101,31 @@ class IndexController extends Controller
         if( $datas->status != 0 ){
             return redirect('show/'.(string)($id+1).'/1' );
         }
+
         // 如果当前第index条目标广告已处理完毕，返回下一个
         $log = AdsAutoLog::where('s_id','=',$id)->where('index_id','=',$index)->get();
-        if( sizeof($log) > 0 ){
-            return redirect('show/'.(string)$id.'/'.(string)($index+1));
+        while( sizeof($log) > 0 ){
+            $index++;
+            $log = AdsAutoLog::where('s_id','=',$id)->where('index_id','=',$index)->get();
         }
 
-        $datas = AdsAutoDetect::find($id);
+        //$datas = AdsAutoDetect::find($id);
         $json = json_decode($datas->result);
         $total = sizeof($json);
 
         if( $index < $total ){
             $data = $json[$index];
             return view('detail',['data'=>$data, 'myid'=>$id, 'total'=>$total, 'current'=>$index]);
-        }else{
+        }else if( $index == $total ) {
+            $datas->status = 1;
+            $datas->save();
+
+            $pheanstalk = new Pheanstalk('127.0.0.1');
+            $pheanstalk->useTube('auto_ads')->put((string)($log->id));
+
+            return redirect('/');
+        }
+        else{
             return view( 'error', ['data'=>'nothing','msg'=>'invalid index id: '.(string)$index ] );
         }
     }
