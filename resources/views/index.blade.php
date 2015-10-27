@@ -39,12 +39,12 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title"></div>
+                <div class="title"><h3>Ready to Edit</h3></div>
                 <table class="table table-striped table-responsive">
                     <tr>
-                        <th>频道</th>
-                        <th>日期</th>
-                        <th>操作</th>
+                        <th>Channel</th>
+                        <th>Date</th>
+                        <th>Options</th>
                     </tr>
                 @foreach ($data as $item)
                     <tr>

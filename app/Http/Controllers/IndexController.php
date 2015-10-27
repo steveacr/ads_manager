@@ -20,6 +20,7 @@ class IndexController extends Controller
      */
     public function index()
     {
+
         $data = AdsAutoDetect::where('status','=',0)->get(['id','channel','day']);
         return view('index', ['data'=>$data] );
         //
@@ -53,7 +54,10 @@ class IndexController extends Controller
         //echo $id.' '.$index.' '.$product.' '.$brand.' '.$start_sec.' '.$end_sec.' '.$filename;
         $start_sec_i = -1;
         $end_sec_i = -1;
-
+        var_dump($request->all());
+        var_dump($start_sec);
+        var_dump($end_sec);
+        return;
         $hms = explode(':', $start_sec);
         if( sizeof($hms) == 3 )
             $start_sec_i = (int)$hms[0]*3600+(int)$hms[1]*60+(int)$hms[2];
@@ -93,6 +97,7 @@ class IndexController extends Controller
      */
     public function show($id, $index)
     {
+
         $datas = AdsAutoDetect::find($id);
         if( sizeof($datas) < 1 ){
             return view( 'error', ['data'=>'nothing','msg'=>'invalid id: '.(string)$id] );
